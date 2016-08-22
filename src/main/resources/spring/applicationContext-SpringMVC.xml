@@ -1,0 +1,76 @@
+﻿<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+          http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+          http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+	<!-- SpringMVC相关配置 -->
+
+	<!-- annotation driven，配置ResponseBody编码 -->
+
+<!-- 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean"> -->
+<!-- 		<property name="converters"> -->
+<!-- 			<list> -->
+<!-- 				<bean class="com.hjb.finance.util.HJBWebBindingInitializer" /> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+
+
+    <!-- 配置注解驱动 -->
+    <!--<mvc:annotation-driven/>-->
+
+    <!-- 考入 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8" />
+                <property name="writeAcceptCharset" value="false" />
+            </bean>
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+	<!-- 静态资源映射为url，可指定cache-period缓存时间 -->
+    <!--静态资源映射-->
+    <!--
+    http://perfy315.iteye.com/blog/2008763
+    mapping="/js/**"
+    表示当浏览器有静态资源请求的时候，并且请求url路径中带有：/js/，则这个资源跑到webapp目录下的/WEB-INF/statics/js/去找
+    比如我们在 JSP 中引入一个 js 文件：src="${webRoot}/js/jQuery-core/jquery-1.6.1.min.js
+    -->
+    <mvc:resources mapping="/css/**" location="/WEB-INF/statics/css/"/>
+    <mvc:resources mapping="/js/**" location="/WEB-INF/statics/js/"/>
+    <mvc:resources mapping="/images/**" location="/WEB-INF/statics/images/"/>
+    <mvc:resources mapping="/**" location="/WEB-INF/view/" cache-period="0"/>
+
+    <!-- 考入 -->
+    <!--
+    <mvc:resources location="/style/images/" mapping="/images/**" cache-period="31536000" />
+    <mvc:resources location="/page/" mapping="/**" cache-period="0" />
+    -->
+
+    <!-- 文件上传 start 配置文件上传，如果没有使用文件上传可以不用配置，当然如果不配，那么配置文件中也不必引入上传组件包 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 默认编码 -->
+        <property name="defaultEncoding" value="UTF-8"/>
+        <!-- 文件大小最大值 上传文件大小限制为10M，10*1024*1024 -->
+        <property name="maxUploadSize" value="10485760"/>
+        <!-- 内存中的最大值 -->
+        <property name="maxInMemorySize" value="4096"/>
+    </bean>
+    <!--文件上传 end-->
+    
+</beans>

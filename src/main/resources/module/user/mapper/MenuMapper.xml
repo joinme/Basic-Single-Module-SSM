@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youmeek.common.sso.mapper.MenuMapper">
+
+	<!--实体映射-->
+	<resultMap id="tMenu" type="com.youmeek.common.sso.model.Menu">
+		<!---->
+		<id property="id" column="id" />
+		<!---->
+		<result property="menuName" column="menu_name" />
+		<!---->
+		<result property="pid" column="pid" />
+		<!---->
+		<result property="resId" column="res_id" />
+		<!---->
+		<result property="menuUrl" column="menu_url" />
+		<!---->
+		<result property="imageUrl" column="image_url" />
+		<!--排序 顺序-->
+		<result property="order" column="order" />
+		<!---->
+		<result property="menuDesc" column="menu_desc" />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	id,	menu_name,	pid,	res_id,	menu_url,	image_url,	order,	menu_desc
+	</sql>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="tMenu" parameterType="java.lang.String">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_menu
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		 DELETE FROM t_menu
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.youmeek.common.sso.model.Menu">
+		 INSERT INTO t_menu
+ 		(id,menu_name,pid,res_id,menu_url,image_url,order,menu_desc) 
+		 VALUES 
+ 		(#{id},#{menuName},#{pid},#{resId},#{menuUrl},#{imageUrl},#{order},#{menuDesc}) 
+	</insert>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="com.youmeek.common.sso.model.Menu">
+		 INSERT INTO t_menu
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="menuName != null">
+				 menu_name,
+			</if>
+			<if test="pid != null">
+				 pid,
+			</if>
+			<if test="resId != null">
+				 res_id,
+			</if>
+			<if test="menuUrl != null">
+				 menu_url,
+			</if>
+			<if test="imageUrl != null">
+				 image_url,
+			</if>
+			<if test="order != null">
+				 order,
+			</if>
+			<if test="menuDesc != null">
+				 menu_desc,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null and id!= ''">
+				 #{id},
+			</if>
+			<if test="menuName!=null and menuName!= ''">
+				 #{menuName},
+			</if>
+			<if test="pid!=null and pid!= ''">
+				 #{pid},
+			</if>
+			<if test="resId!=null and resId!= ''">
+				 #{resId},
+			</if>
+			<if test="menuUrl!=null and menuUrl!= ''">
+				 #{menuUrl},
+			</if>
+			<if test="imageUrl!=null and imageUrl!= ''">
+				 #{imageUrl},
+			</if>
+			<if test="order!=null and order!= ''">
+				 #{order},
+			</if>
+			<if test="menuDesc!=null and menuDesc!= ''">
+				 #{menuDesc},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="com.youmeek.common.sso.model.Menu">
+		 UPDATE t_menu
+ 		 <set> 
+			<if test="menuName != null">
+				 menu_name = #{menuName},
+			</if>
+			<if test="pid != null">
+				 pid = #{pid},
+			</if>
+			<if test="resId != null">
+				 res_id = #{resId},
+			</if>
+			<if test="menuUrl != null">
+				 menu_url = #{menuUrl},
+			</if>
+			<if test="imageUrl != null">
+				 image_url = #{imageUrl},
+			</if>
+			<if test="order != null">
+				 order = #{order},
+			</if>
+			<if test="menuDesc != null">
+				 menu_desc = #{menuDesc},
+			</if>
+
+ 		 </set>
+		 WHERE id = #{id}
+	</update>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKey" parameterType="com.youmeek.common.sso.model.Menu">
+		 UPDATE t_menu
+		 SET 
+			 menu_name = #{menuName},
+			 pid = #{pid},
+			 res_id = #{resId},
+			 menu_url = #{menuUrl},
+			 image_url = #{imageUrl},
+			 order = #{order},
+			 menu_desc = #{menuDesc}
+		 WHERE id = #{id}
+	</update>
+
+	<!-- 修 改-->
+	<select id="selectByObject" resultMap="tMenu" parameterType="com.youmeek.common.sso.model.Menu">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_menu
+ 		 where 1=1 
+			<if test="menuName != null">
+				 and  menu_name = #{menuName}
+			</if>
+			<if test="pid != null">
+				 and  pid = #{pid}
+			</if>
+			<if test="resId != null">
+				 and  res_id = #{resId}
+			</if>
+			<if test="menuUrl != null">
+				 and  menu_url = #{menuUrl}
+			</if>
+			<if test="imageUrl != null">
+				 and  image_url = #{imageUrl}
+			</if>
+			<if test="order != null">
+				 and  order = #{order}
+			</if>
+			<if test="menuDesc != null">
+				 and  menu_desc = #{menuDesc}
+			</if>
+
+	</select>
+
+</mapper>

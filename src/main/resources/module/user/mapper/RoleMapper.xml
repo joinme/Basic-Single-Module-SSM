@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youmeek.common.sso.mapper.RoleMapper">
+
+	<!--实体映射-->
+	<resultMap id="tRole" type="com.youmeek.common.sso.model.Role">
+		<!---->
+		<id property="id" column="id" />
+		<!--资源描述-->
+		<result property="roleName" column="role_name" />
+		<!--资源描述-->
+		<result property="roleDesc" column="role_desc" />
+		<!--1=C端，2=B端，缺省为2-->
+		<result property="roleType" column="role_type" />
+		<!--1=有效，2=已禁用，9=已删除-->
+		<result property="roleStatus" column="role_status" />
+		<!--角色权重-->
+		<result property="roleWeight" column="role_weight" />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	id,	role_name,	role_desc,	role_type,	role_status,	role_weight
+	</sql>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="tRole" parameterType="java.lang.String">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_role
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		 DELETE FROM t_role
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.youmeek.common.sso.model.Role">
+		 INSERT INTO t_role
+ 		(id,role_name,role_desc,role_type,role_status,role_weight) 
+		 VALUES 
+ 		(#{id},#{roleName},#{roleDesc},#{roleType},#{roleStatus},#{roleWeight}) 
+	</insert>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="com.youmeek.common.sso.model.Role">
+		 INSERT INTO t_role
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="roleName != null">
+				 role_name,
+			</if>
+			<if test="roleDesc != null">
+				 role_desc,
+			</if>
+			<if test="roleType != null">
+				 role_type,
+			</if>
+			<if test="roleStatus != null">
+				 role_status,
+			</if>
+			<if test="roleWeight != null">
+				 role_weight,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null and id!= ''">
+				 #{id},
+			</if>
+			<if test="roleName!=null and roleName!= ''">
+				 #{roleName},
+			</if>
+			<if test="roleDesc!=null and roleDesc!= ''">
+				 #{roleDesc},
+			</if>
+			<if test="roleType!=null and roleType!= ''">
+				 #{roleType},
+			</if>
+			<if test="roleStatus!=null and roleStatus!= ''">
+				 #{roleStatus},
+			</if>
+			<if test="roleWeight!=null and roleWeight!= ''">
+				 #{roleWeight},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="com.youmeek.common.sso.model.Role">
+		 UPDATE t_role
+ 		 <set> 
+			<if test="roleName != null">
+				 role_name = #{roleName},
+			</if>
+			<if test="roleDesc != null">
+				 role_desc = #{roleDesc},
+			</if>
+			<if test="roleType != null">
+				 role_type = #{roleType},
+			</if>
+			<if test="roleStatus != null">
+				 role_status = #{roleStatus},
+			</if>
+			<if test="roleWeight != null">
+				 role_weight = #{roleWeight},
+			</if>
+
+ 		 </set>
+		 WHERE id = #{id}
+	</update>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKey" parameterType="com.youmeek.common.sso.model.Role">
+		 UPDATE t_role
+		 SET 
+			 role_name = #{roleName},
+			 role_desc = #{roleDesc},
+			 role_type = #{roleType},
+			 role_status = #{roleStatus},
+			 role_weight = #{roleWeight}
+		 WHERE id = #{id}
+	</update>
+
+	<!-- 修 改-->
+	<select id="selectByObject" resultMap="tRole" parameterType="com.youmeek.common.sso.model.Role">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_role
+ 		 where 1=1 
+			<if test="roleName != null">
+				 and  role_name = #{roleName}
+			</if>
+			<if test="roleDesc != null">
+				 and  role_desc = #{roleDesc}
+			</if>
+			<if test="roleType != null">
+				 and  role_type = #{roleType}
+			</if>
+			<if test="roleStatus != null">
+				 and  role_status = #{roleStatus}
+			</if>
+			<if test="roleWeight != null">
+				 and  role_weight = #{roleWeight}
+			</if>
+
+	</select>
+
+</mapper>

@@ -2,7 +2,7 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-
+    
 	<settings>
 		<!-- 开启mybatis缓存设置,一般都是true -->
 		<setting name="cacheEnabled" value="true"/>
@@ -26,5 +26,27 @@
 		<!--允许JDBC支持自动生成主键,需要驱动的兼容-->
 		<setting name="useGeneratedKeys" value="true"/>
 	</settings>
-
+    
+    <!-- 考入 -->
+    <typeAliases>
+        <!-- 别名 ,applicationContext-MyBatis.xml里引入package即可，不需要此处每个实体类创建别名-->
+    </typeAliases>
+    
+    <!-- 考入 -->
+    <!--
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <property name="offsetAsPageNum" value="true"/>
+            <property name="rowBoundsWithCount" value="true"/>
+            &lt;!&ndash; 0查全部 &ndash;&gt;
+            <property name="pageSizeZero" value="true"/>
+            <property name="reasonable" value="false"/>
+            &lt;!&ndash; 为了和项目中现有orderBy冲突问题，重命名框架分页orderBy的key为ordersBy &ndash;&gt;
+            <property name="params" value="pageNum=start;pageSize=limit;orderBy=ordersBy"/>
+            <property name="supportMethodsArguments" value="true"/>
+            <property name="returnPageInfo" value="check"/>
+        </plugin>
+    </plugins>
+    -->
+    
 </configuration>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youmeek.common.sso.mapper.ResourceMapper">
+
+	<!--实体映射-->
+	<resultMap id="tResource" type="com.youmeek.common.sso.model.Resource">
+		<!---->
+		<id property="id" column="id" />
+		<!--资源描述-->
+		<result property="resDesc" column="res_desc" />
+		<!--资源类型 1、链接 2 、菜单-->
+		<result property="resType" column="res_type" />
+		<!--资源地址-->
+		<result property="resUrl" column="res_url" />
+		<!---->
+		<result property="resName" column="res_name" />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	id,	res_desc,	res_type,	res_url,	res_name
+	</sql>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="tResource" parameterType="java.lang.String">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_resource
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		 DELETE FROM t_resource
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.youmeek.common.sso.model.Resource">
+		 INSERT INTO t_resource
+ 		(id,res_desc,res_type,res_url,res_name) 
+		 VALUES 
+ 		(#{id},#{resDesc},#{resType},#{resUrl},#{resName}) 
+	</insert>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="com.youmeek.common.sso.model.Resource">
+		 INSERT INTO t_resource
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="resDesc != null">
+				 res_desc,
+			</if>
+			<if test="resType != null">
+				 res_type,
+			</if>
+			<if test="resUrl != null">
+				 res_url,
+			</if>
+			<if test="resName != null">
+				 res_name,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null and id!= ''">
+				 #{id},
+			</if>
+			<if test="resDesc!=null and resDesc!= ''">
+				 #{resDesc},
+			</if>
+			<if test="resType!=null and resType!= ''">
+				 #{resType},
+			</if>
+			<if test="resUrl!=null and resUrl!= ''">
+				 #{resUrl},
+			</if>
+			<if test="resName!=null and resName!= ''">
+				 #{resName},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="com.youmeek.common.sso.model.Resource">
+		 UPDATE t_resource
+ 		 <set> 
+			<if test="resDesc != null">
+				 res_desc = #{resDesc},
+			</if>
+			<if test="resType != null">
+				 res_type = #{resType},
+			</if>
+			<if test="resUrl != null">
+				 res_url = #{resUrl},
+			</if>
+			<if test="resName != null">
+				 res_name = #{resName},
+			</if>
+
+ 		 </set>
+		 WHERE id = #{id}
+	</update>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKey" parameterType="com.youmeek.common.sso.model.Resource">
+		 UPDATE t_resource
+		 SET 
+			 res_desc = #{resDesc},
+			 res_type = #{resType},
+			 res_url = #{resUrl},
+			 res_name = #{resName}
+		 WHERE id = #{id}
+	</update>
+
+	<!-- 修 改-->
+	<select id="selectByObject" resultMap="tResource" parameterType="com.youmeek.common.sso.model.Resource">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_resource
+ 		 where 1=1 
+			<if test="resDesc != null">
+				 and  res_desc = #{resDesc}
+			</if>
+			<if test="resType != null">
+				 and  res_type = #{resType}
+			</if>
+			<if test="resUrl != null">
+				 and  res_url = #{resUrl}
+			</if>
+			<if test="resName != null">
+				 and  res_name = #{resName}
+			</if>
+
+	</select>
+
+	<select id="selectResourcesByUserId" resultType="string" parameterType="string">
+		SELECT t1.res_url AS resUrl
+		FROM t_resource t1, t_user_role t2, t_role_res t3
+        WHERE t2.role_id = t3.role_id
+        and t3.res_id = t1.id
+        and t2.user_id = #{userId}
+	</select>
+
+</mapper>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youmeek.common.sso.mapper.UserRoleMapper">
+
+	<!--实体映射-->
+	<resultMap id="tUserRole" type="com.youmeek.common.sso.model.UserRole">
+		<!---->
+		<id property="id" column="id" />
+		<!---->
+		<result property="roleId" column="role_id" />
+		<!---->
+		<result property="userId" column="user_id" />
+		<!--主体类型1=U,2=R-->
+		<result property="linkType" column="link_type" />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	id,	role_id,	user_id,	link_type
+	</sql>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="tUserRole" parameterType="java.lang.String">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_user_role
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		 DELETE FROM t_user_role
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.youmeek.common.sso.model.UserRole">
+		 INSERT INTO t_user_role
+ 		(id,role_id,user_id,link_type) 
+		 VALUES 
+ 		(#{id},#{roleId},#{userId},#{linkType}) 
+	</insert>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="com.youmeek.common.sso.model.UserRole">
+		 INSERT INTO t_user_role
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="roleId != null">
+				 role_id,
+			</if>
+			<if test="userId != null">
+				 user_id,
+			</if>
+			<if test="linkType != null">
+				 link_type,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null and id!= ''">
+				 #{id},
+			</if>
+			<if test="roleId!=null and roleId!= ''">
+				 #{roleId},
+			</if>
+			<if test="userId!=null and userId!= ''">
+				 #{userId},
+			</if>
+			<if test="linkType!=null and linkType!= ''">
+				 #{linkType},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="com.youmeek.common.sso.model.UserRole">
+		 UPDATE t_user_role
+ 		 <set> 
+			<if test="roleId != null">
+				 role_id = #{roleId},
+			</if>
+			<if test="userId != null">
+				 user_id = #{userId},
+			</if>
+			<if test="linkType != null">
+				 link_type = #{linkType},
+			</if>
+
+ 		 </set>
+		 WHERE id = #{id}
+	</update>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKey" parameterType="com.youmeek.common.sso.model.UserRole">
+		 UPDATE t_user_role
+		 SET 
+			 role_id = #{roleId},
+			 user_id = #{userId},
+			 link_type = #{linkType}
+		 WHERE id = #{id}
+	</update>
+
+	<!-- 修 改-->
+	<select id="selectByObject" resultMap="tUserRole" parameterType="com.youmeek.common.sso.model.UserRole">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_user_role
+ 		 where 1=1 
+			<if test="roleId != null">
+				 and  role_id = #{roleId}
+			</if>
+			<if test="userId != null">
+				 and  user_id = #{userId}
+			</if>
+			<if test="linkType != null">
+				 and  link_type = #{linkType}
+			</if>
+
+	</select>
+
+</mapper>

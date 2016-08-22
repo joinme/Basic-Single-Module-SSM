@@ -4,11 +4,6 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
     
     <display-name>SSM Web Application</display-name>
-
-    <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
-    
     
     <!-- Spring和mybatis的配置文件 -->
     <context-param>
@@ -16,14 +11,31 @@
         <param-value>classpath*:spring/applicationContext*.xml</param-value>
     </context-param>
 
+    <!--考入-->
+    <!-- 防止Spring内存溢出监听器 -->
+    <!-- 防止发生java.beans.Introspector内存泄露,应将它配置在ContextLoaderListener的前面 -->
+    <!-- 详细描述见http://blog.csdn.net/jadyer/article/details/11991457 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
     <!-- Spring监听器 -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    <!-- 防止Spring内存溢出监听器 -->
     <listener>
-        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+        <listener-class>com.youmeek.common.listener.LoadConfigurationListener</listener-class>
     </listener>
+    <!--考入-->
+    <!-- 并发Session -->
+    <listener>
+        <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+    </listener>
+
+    <!--考入-->
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+
 
     <!-- 配置SESSION超时，单位是分钟 -->
     <session-config>
@@ -48,6 +60,39 @@
 
     <!-- druid 数据源，用于采集 web-jdbc 关联监控的数据 -->
     <!-- 具体参考官网：https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_%E9%85%8D%E7%BD%AEWebStatFilter-->
+
+    <!-- servlet -->
+    <servlet>
+        <servlet-name>DruidStatServlet</servlet-name>
+        <servlet-class>com.youmeek.common.base.dao.SelfDruidStatServlet</servlet-class>
+        <init-param>
+            <param-name>allow</param-name>
+            <!-- 192.168.39.40,192.168.39.98,192.168.39.100,192.168.39.91,127.0.0.1,localhost -->
+            <param-value>Ci64dLaWn2tNC/4tniOhQDXjFHKvZUDSTbobQBpaZOfb2yao56dsj7bPyzYgGdc2XPfBt/BIqYUD4gLwS8cP49CZVCgpQPjjy3MO70ifcZM=</param-value>
+        </init-param>
+        <init-param>
+            <param-name>resetEnable</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>loginUsername</param-name>
+            <!--dbAdmin-->
+            <param-value>o7antdyy8dMNYMe+N2wlzg==</param-value>
+        </init-param>
+        <init-param>
+            <param-name>loginPassword</param-name>
+            <!--hjbDBManager-->
+            <param-value>ekdqVM6eNIHtnlQl1zRiBg==</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DruidStatServlet</servlet-name>
+        <url-pattern>/druid/*</url-pattern>
+    </servlet-mapping>
+
+   
+    
+    <!--
     <filter>
         <filter-name>DruidWebStatFilter</filter-name>
         <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
@@ -64,7 +109,7 @@
         <filter-name>DruidWebStatFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    
+    -->
     
 
     <!-- ############################################ filter end  ############################################ -->
@@ -79,7 +124,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:spring/spring-mvc.xml</param-value>
+            <param-value>classpath:spring/dispacther-servlet.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
         <async-supported>true</async-supported>
@@ -89,6 +134,71 @@
         <!-- 此处可以可以配置成 *.do ，对应struts的后缀习惯 -->
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+    <!--考入-->
+    <filter>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <servlet-name>SpringMVC</servlet-name>
+    </filter-mapping>
+
+    <!--考入-->
+    <filter>
+        <filter-name>checkLoginFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>targetBeanName</param-name>
+            <param-value>checkLoginFilter</param-value>
+        </init-param>
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>checkLoginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>authorizationFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>targetBeanName</param-name>
+            <param-value>authorizationFilter</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>authorizationFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    
+    <filter>
+        <filter-name>DruidWebStatFilter</filter-name>
+        <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+        <init-param>
+            <param-name>exclusions</param-name>
+            <param-value>*.html,*.js,*.css,*.gif,*.jpg,*.png,*.ico,/druid/*</param-value>
+        </init-param>
+        <init-param>
+            <param-name>sessionStatEnable</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <!-- URL stat -->
+        <init-param>
+            <param-name>profileEnable</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>DruidWebStatFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    
     <welcome-file-list>
         <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
@@ -96,20 +206,38 @@
 
     <!--展示Druid的统计信息-->
     <!--具体可以看官网信息：https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_StatViewServlet%E9%85%8D%E7%BD%AE-->
+    <!--
     <servlet>
         <servlet-name>DruidStatView</servlet-name>
         <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DruidStatView</servlet-name>
-        <!--访问路径eg：http://localhost:8080/druid/index.html -->
+        &lt;!&ndash;访问路径eg：http://localhost:8080/druid/index.html &ndash;&gt;
         <url-pattern>/druid/*</url-pattern>
     </servlet-mapping>
-    
+    -->
     
     <!-- ############################################ servlet end  ############################################ -->
-
-
-
+    
+    
+    <!-- 考入 -->
+    <!--
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/404.html</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error/500.html</location>
+    </error-page>
+    <mime-mapping>
+        <extension>map</extension>
+        <mime-type>application/json</mime-type>
+    </mime-mapping>
+    <welcome-file-list>
+        <welcome-file>/</welcome-file>
+    </welcome-file-list>
+    -->
 
 </web-app>

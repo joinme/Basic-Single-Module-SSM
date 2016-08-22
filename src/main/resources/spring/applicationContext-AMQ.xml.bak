@@ -1,0 +1,64 @@
+﻿<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+          http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+
+	<context:property-placeholder location="classpath:properties/config.properties" />
+
+	<!-- MQ连接池 -->
+	<bean id="connectionFactory" class="com.youmeek.common.amq.SelfActiveMQConnectionFactory">
+		<property name="brokerURL" value="${amq.url}"/>
+		<property name="userName" value="${amq.username}" />
+		<property name="password" value="${amq.pwd}" />
+	</bean>
+	
+	<!-- 队列 名 -->
+	<bean id="logOutDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg index="0" value="${amq.queue.log}"></constructor-arg>
+	</bean>
+    
+	<bean id="exOutDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg index="0" value="${amq.queue.excpt}"></constructor-arg>
+	</bean>
+	
+	<!--配置发送jms消息的模板， 类中使用时，直接这样用  监听 和 发送 可以不再统一项目配置
+	@Resource
+	private JmsTemplate projectFailProcessTemplate;
+	
+	projectFailProcessTemplate.send(new MessageCreator() {
+	-->
+    <!--
+	<bean id="logOutTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory"></property>
+		<property name="defaultDestination" ref="logOutDestination"></property>
+		<property name="receiveTimeout" value="600"></property>
+	</bean>
+    
+	<bean id="exOutJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory"></property>
+		<property name="defaultDestination" ref="exOutDestination"></property>
+		<property name="receiveTimeout" value="600"></property>
+	</bean>
+    -->
+    <!-- 配置监听JMS消息   使用的时候 这样用          监听 和 发送 可以不再统一项目配置
+        @Component
+        public class FlbBuyListener implements javax.jms.MessageListener {
+        
+    -->
+    <!--
+    <bean
+            class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destination" ref="flbBuyOutDestination" />
+        <property name="messageListener" ref="flbBuyListener" />
+        <property name="concurrentConsumers" value="1" />
+        <property name="receiveTimeout" value="1000" />
+    </bean>
+	-->
+</beans>

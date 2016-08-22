@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youmeek.common.sso.mapper.UserMapper">
+
+	<!--实体映射-->
+	<resultMap id="tUser" type="com.youmeek.common.sso.model.User">
+		<!---->
+		<id property="id" column="id" />
+		<!---->
+		<result property="userId" column="u_id" />
+		<!---->
+		<result property="userName" column="user_name" />
+		<!---->
+		<result property="passWord" column="password" />
+		<!---->
+		<result property="nickName" column="nick_name" />
+		<!---->
+		<result property="sex" column="sex" />
+		<!---->
+		<result property="birthday" column="birthday" jdbcType="TIMESTAMP"/>
+		<!---->
+		<result property="registerType" column="register_type" />
+		<!---->
+		<result property="mobile" column="mobile" />
+		<!---->
+		<result property="telephone" column="telephone" />
+		<!---->
+		<result property="email" column="email" />
+		<!---->
+		<result property="realName" column="real_name" />
+		<!---->
+		<result property="idType" column="id_type" />
+		<!---->
+		<result property="idNumber" column="id_number" />
+		<!---->
+		<result property="picGroupName" column="pic_group_name" />
+		<!---->
+		<result property="picFileName" column="pic_file_name" />
+		<!---->
+		<result property="registResource" column="regist_resource" />
+		<!---->
+		<result property="status" column="status" />
+		<!---->
+		<result property="activeFlag" column="active_flag" />
+		<!---->
+		<result property="createUser" column="create_user" />
+		<!---->
+		<result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+		<!---->
+		<result property="updateUser" column="update_user" />
+		<!---->
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+		<!---->
+		<result property="lastLoginTime" column="last_login_time" jdbcType="TIMESTAMP"/>
+		<!---->
+		<result property="channelType" column="channel_type" />
+		<!---->
+		<result property="recommendCode" column="recommend_code" />
+	</resultMap>
+
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+	id,	u_id,	user_name,	password,	nick_name,	sex,	birthday,	register_type,	mobile,	telephone,	email,	real_name,	id_type,	id_number,	pic_group_name,	pic_file_name,	regist_resource,	status,	active_flag,	create_user,	create_time,	update_user,	update_time,	last_login_time,	channel_type,	recommend_code
+	</sql>
+
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selectByPrimaryKey" resultMap="tUser" parameterType="java.lang.String">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_user
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		 DELETE FROM t_user
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.youmeek.common.sso.model.User">
+		 INSERT INTO t_user
+ 		(id,u_id,user_name,password,nick_name,sex,birthday,register_type,mobile,telephone,email,real_name,id_type,id_number,pic_group_name,pic_file_name,regist_resource,status,active_flag,create_user,create_time,update_user,update_time,last_login_time,channel_type,recommend_code) 
+		 VALUES 
+ 		(#{id},#{userId},#{userName},#{passWord},#{nickName},#{sex},#{birthday},#{registerType},#{mobile},#{telephone},#{email},#{realName},#{idType},#{idNumber},#{picGroupName},#{picFileName},#{registResource},#{status},#{activeFlag},#{createUser},#{createTime},#{updateUser},#{updateTime},#{lastLoginTime},#{channelType},#{recommendCode}) 
+	</insert>
+
+	<!-- 添加 （匹配有值的字段）-->
+	<insert id="insertSelective" parameterType="com.youmeek.common.sso.model.User">
+		 INSERT INTO t_user
+		 <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null">
+				 id,
+			</if>
+			<if test="userId != null">
+				 u_id,
+			</if>
+			<if test="userName != null">
+				 user_name,
+			</if>
+			<if test="passWord != null">
+				 password,
+			</if>
+			<if test="nickName != null">
+				 nick_name,
+			</if>
+			<if test="sex != null">
+				 sex,
+			</if>
+			<if test="birthday != null">
+				 birthday,
+			</if>
+			<if test="registerType != null">
+				 register_type,
+			</if>
+			<if test="mobile != null">
+				 mobile,
+			</if>
+			<if test="telephone != null">
+				 telephone,
+			</if>
+			<if test="email != null">
+				 email,
+			</if>
+			<if test="realName != null">
+				 real_name,
+			</if>
+			<if test="idType != null">
+				 id_type,
+			</if>
+			<if test="idNumber != null">
+				 id_number,
+			</if>
+			<if test="picGroupName != null">
+				 pic_group_name,
+			</if>
+			<if test="picFileName != null">
+				 pic_file_name,
+			</if>
+			<if test="registResource != null">
+				 regist_resource,
+			</if>
+			<if test="status != null">
+				 status,
+			</if>
+			<if test="activeFlag != null">
+				 active_flag,
+			</if>
+			<if test="createUser != null">
+				 create_user,
+			</if>
+			<if test="createTime != null">
+				 create_time,
+			</if>
+			<if test="updateUser != null">
+				 update_user,
+			</if>
+			<if test="updateTime != null">
+				 update_time,
+			</if>
+			<if test="lastLoginTime != null">
+				 last_login_time,
+			</if>
+			<if test="channelType != null">
+				 channel_type,
+			</if>
+			<if test="recommendCode != null">
+				 recommend_code,
+			</if>
+
+		 </trim>
+		 <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id!=null and id!= ''">
+				 #{id},
+			</if>
+			<if test="userId!=null and userId!= ''">
+				 #{userId},
+			</if>
+			<if test="userName!=null and userName!= ''">
+				 #{userName},
+			</if>
+			<if test="passWord!=null and passWord!= ''">
+				 #{passWord},
+			</if>
+			<if test="nickName!=null and nickName!= ''">
+				 #{nickName},
+			</if>
+			<if test="sex!=null and sex!= ''">
+				 #{sex},
+			</if>
+			<if test="birthday!=null and birthday!= ''">
+				 #{birthday},
+			</if>
+			<if test="registerType!=null and registerType!= ''">
+				 #{registerType},
+			</if>
+			<if test="mobile!=null and mobile!= ''">
+				 #{mobile},
+			</if>
+			<if test="telephone!=null and telephone!= ''">
+				 #{telephone},
+			</if>
+			<if test="email!=null and email!= ''">
+				 #{email},
+			</if>
+			<if test="realName!=null and realName!= ''">
+				 #{realName},
+			</if>
+			<if test="idType!=null and idType!= ''">
+				 #{idType},
+			</if>
+			<if test="idNumber!=null and idNumber!= ''">
+				 #{idNumber},
+			</if>
+			<if test="picGroupName!=null and picGroupName!= ''">
+				 #{picGroupName},
+			</if>
+			<if test="picFileName!=null and picFileName!= ''">
+				 #{picFileName},
+			</if>
+			<if test="registResource!=null and registResource!= ''">
+				 #{registResource},
+			</if>
+			<if test="status!=null and status!= ''">
+				 #{status},
+			</if>
+			<if test="activeFlag!=null and activeFlag!= ''">
+				 #{activeFlag},
+			</if>
+			<if test="createUser!=null and createUser!= ''">
+				 #{createUser},
+			</if>
+			<if test="createTime!=null and createTime!= ''">
+				 #{createTime},
+			</if>
+			<if test="updateUser!=null and updateUser!= ''">
+				 #{updateUser},
+			</if>
+			<if test="updateTime!=null and updateTime!= ''">
+				 #{updateTime},
+			</if>
+			<if test="lastLoginTime!=null and lastLoginTime!= ''">
+				 #{lastLoginTime},
+			</if>
+			<if test="channelType!=null and channelType!= ''">
+				 #{channelType},
+			</if>
+			<if test="recommendCode!=null and recommendCode!= ''">
+				 #{recommendCode},
+			</if>
+		 </trim>
+	</insert>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKeySelective" parameterType="com.youmeek.common.sso.model.User">
+		 UPDATE t_user
+ 		 <set> 
+			<if test="userId != null">
+				 u_id = #{userId},
+			</if>
+			<if test="userName != null">
+				 user_name = #{userName},
+			</if>
+			<if test="passWord != null">
+				 password = #{passWord},
+			</if>
+			<if test="nickName != null">
+				 nick_name = #{nickName},
+			</if>
+			<if test="sex != null">
+				 sex = #{sex},
+			</if>
+			<if test="birthday != null">
+				 birthday = #{birthday},
+			</if>
+			<if test="registerType != null">
+				 register_type = #{registerType},
+			</if>
+			<if test="mobile != null">
+				 mobile = #{mobile},
+			</if>
+			<if test="telephone != null">
+				 telephone = #{telephone},
+			</if>
+			<if test="email != null">
+				 email = #{email},
+			</if>
+			<if test="realName != null">
+				 real_name = #{realName},
+			</if>
+			<if test="idType != null">
+				 id_type = #{idType},
+			</if>
+			<if test="idNumber != null">
+				 id_number = #{idNumber},
+			</if>
+			<if test="picGroupName != null">
+				 pic_group_name = #{picGroupName},
+			</if>
+			<if test="picFileName != null">
+				 pic_file_name = #{picFileName},
+			</if>
+			<if test="registResource != null">
+				 regist_resource = #{registResource},
+			</if>
+			<if test="status != null">
+				 status = #{status},
+			</if>
+			<if test="activeFlag != null">
+				 active_flag = #{activeFlag},
+			</if>
+			<if test="createUser != null">
+				 create_user = #{createUser},
+			</if>
+			<if test="createTime != null">
+				 create_time = #{createTime},
+			</if>
+			<if test="updateUser != null">
+				 update_user = #{updateUser},
+			</if>
+			<if test="updateTime != null">
+				 update_time = #{updateTime},
+			</if>
+			<if test="lastLoginTime != null">
+				 last_login_time = #{lastLoginTime},
+			</if>
+			<if test="channelType != null">
+				 channel_type = #{channelType},
+			</if>
+			<if test="recommendCode != null">
+				 recommend_code = #{recommendCode},
+			</if>
+
+ 		 </set>
+		 WHERE id = #{id}
+	</update>
+
+	<!-- 修 改-->
+	<update id="updateByPrimaryKey" parameterType="com.youmeek.common.sso.model.User">
+		 UPDATE t_user
+		 SET 
+			 u_id = #{userId},
+			 user_name = #{userName},
+			 password = #{passWord},
+			 nick_name = #{nickName},
+			 sex = #{sex},
+			 birthday = #{birthday},
+			 register_type = #{registerType},
+			 mobile = #{mobile},
+			 telephone = #{telephone},
+			 email = #{email},
+			 real_name = #{realName},
+			 id_type = #{idType},
+			 id_number = #{idNumber},
+			 pic_group_name = #{picGroupName},
+			 pic_file_name = #{picFileName},
+			 regist_resource = #{registResource},
+			 status = #{status},
+			 active_flag = #{activeFlag},
+			 create_user = #{createUser},
+			 create_time = #{createTime},
+			 update_user = #{updateUser},
+			 update_time = #{updateTime},
+			 last_login_time = #{lastLoginTime},
+			 channel_type = #{channelType},
+			 recommend_code = #{recommendCode}
+		 WHERE id = #{id}
+	</update>
+
+	<!-- 修 改-->
+	<select id="selectByObject" resultMap="tUser" parameterType="com.youmeek.common.sso.model.User">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_user
+ 		 where 1=1 
+			<if test="userId != null">
+				 and  u_id = #{userId}
+			</if>
+			<if test="userName != null">
+				 and  user_name = #{userName}
+			</if>
+			<if test="passWord != null">
+				 and  password = #{passWord}
+			</if>
+			<if test="nickName != null">
+				 and  nick_name = #{nickName}
+			</if>
+			<if test="sex != null">
+				 and  sex = #{sex}
+			</if>
+			<if test="birthday != null">
+				 and  birthday = #{birthday}
+			</if>
+			<if test="registerType != null">
+				 and  register_type = #{registerType}
+			</if>
+			<if test="mobile != null">
+				 and  mobile = #{mobile}
+			</if>
+			<if test="telephone != null">
+				 and  telephone = #{telephone}
+			</if>
+			<if test="email != null">
+				 and  email = #{email}
+			</if>
+			<if test="realName != null">
+				 and  real_name = #{realName}
+			</if>
+			<if test="idType != null">
+				 and  id_type = #{idType}
+			</if>
+			<if test="idNumber != null">
+				 and  id_number = #{idNumber}
+			</if>
+			<if test="picGroupName != null">
+				 and  pic_group_name = #{picGroupName}
+			</if>
+			<if test="picFileName != null">
+				 and  pic_file_name = #{picFileName}
+			</if>
+			<if test="registResource != null">
+				 and  regist_resource = #{registResource}
+			</if>
+			<if test="status != null">
+				 and  status = #{status}
+			</if>
+			<if test="activeFlag != null">
+				 and  active_flag = #{activeFlag}
+			</if>
+			<if test="createUser != null">
+				 and  create_user = #{createUser}
+			</if>
+			<if test="createTime != null">
+				 and  create_time = #{createTime}
+			</if>
+			<if test="updateUser != null">
+				 and  update_user = #{updateUser}
+			</if>
+			<if test="updateTime != null">
+				 and  update_time = #{updateTime}
+			</if>
+			<if test="lastLoginTime != null">
+				 and  last_login_time = #{lastLoginTime}
+			</if>
+			<if test="channelType != null">
+				 and  channel_type = #{channelType}
+			</if>
+			<if test="recommendCode != null">
+				 and  recommend_code = #{recommendCode}
+			</if>
+
+	</select>
+    
+	<select id="queryUser" resultMap="tUser" parameterType="com.youmeek.common.sso.model.User">
+		 SELECT
+		 <include refid="Base_Column_List" />
+		 FROM t_user
+ 		 where 1=1 
+			<if test="userId != null">
+				 and  u_id = #{userId}
+			</if>
+			<if test="userName != null">
+				 and  user_name = #{userName}
+			</if>
+			<if test="passWord != null">
+				 and  password = #{passWord}
+			</if>
+	</select>
+
+</mapper>

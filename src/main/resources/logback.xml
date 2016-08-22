@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- propertis -->
+    <!-- 应用日志文件地址 -->
+    <property name="ALL_LOG_PATH" value="${catalina.home}/logs/ssm"/>
+    <timestamp key="byDate" datePattern="yyyyMMdd" />
+    <property name="LOG_CHARSET" value="UTF-8" />
+    <property name="LOG_ROOT_LEVEL" value="DEBUG" />
+    <!-- formatter -->
+    <!-- <property name="LOG_MSG" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p 
+        [%c] %m%n" /> -->
+    <property name="LOG_MSG" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5p [%c] %m%n" />
+
+    <!-- appender -->
+    <!-- 标准输出，到控制台 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- <Encoding>${LOG_CHARSET}</Encoding> -->
+        <!-- <Target>System.out</Target> -->
+        <encoder>
+            <pattern>${LOG_MSG}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 文件appender，基于时间滚动，每天一个目录。当文件大小超过50MB时新生成一个文件 -->
+    <appender name="ALL_LOG"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- <Encoding>${LOG_CHARSET}</Encoding> -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${ALL_LOG_PATH}/%d{yyyyMMdd}/log%i.log
+            </FileNamePattern>
+            <maxHistory>10</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_MSG}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ERROR_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <OnMismatch>DENY</OnMismatch>
+            <OnMatch>ACCEPT</OnMatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${ALL_LOG_PATH}/ERROR/%d{yyyyMMdd}/log%i.log</FileNamePattern>
+            <maxHistory>10</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_MSG}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 	<appender name="BUSS_LOG" class="ch.qos.logback.classic.net.JMSQueueAppender"> -->
+    <!-- 		<filter class="ch.qos.logback.classic.filter.LevelFilter"> -->
+    <!-- 			<level>INFO</level> -->
+    <!-- 			<OnMismatch>DENY</OnMismatch> -->
+    <!-- 			<OnMatch>ACCEPT</OnMatch> -->
+    <!-- 		</filter> -->
+    <!-- 		<InitialContextFactoryName> -->
+    <!-- 			org.apache.activemq.jndi.ActiveMQInitialContextFactory -->
+    <!-- 		</InitialContextFactoryName> -->
+    <!-- 		<ProviderURL>tcp://192.168.3.31:61616</ProviderURL> -->
+    <!-- 		<userName>bxcsuser</userName> -->
+    <!-- 		<password>bxcspswd.hjb365</password> -->
+    <!-- 		<QueueConnectionFactoryBindingName>ConnectionFactory</QueueConnectionFactoryBindingName> -->
+    <!-- 		<QueueBindingName>BXCS.personIn</QueueBindingName> -->
+    <!-- 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"> -->
+    <!-- 			<charset>UTF-8</charset> -->
+    <!-- 			<pattern>%m%n</pattern> -->
+    <!-- 		</encoder> -->
+    <!-- 	</appender> -->
+    <!-- 	<logger name="com.hjb.finance.util.SendUtilTools" additivity="true" -->
+    <!-- 		level="INFO"> -->
+    <!-- 		<appender-ref ref="BUSS_LOG" /> -->
+    <!-- 	</logger> -->
+
+
+    <!-- logger -->
+    <logger name="org.mybatis" level="DEBUG" />
+    <logger name="com.ibatis" level="DEBUG" />
+    <logger name="java.sql.Connection" level="DEBUG" />
+    <logger name="java.sql.Statement" level="DEBUG" />
+    <logger name="java.sql.PreparedStatement" level="DEBUG" />
+    <logger name="java.sql.ResultSet" level="DEBUG" />
+    <logger name="org.apache.commons.httpclient.util.IdleConnectionHandler" level="INFO" />
+    <logger name="org.apache.activemq.transport.AbstractInactivityMonitor"
+            level="INFO" />
+    <logger name="org.springframework.jms.listener" level="OFF" />
+    <include resource="common-logback.xml"/>
+
+    <!-- TRACE << DEBUG << INFO << WARN << ERROR << ALL << OFF -->
+    <root level="${LOG_ROOT_LEVEL}">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="ALL_LOG" />
+        <appender-ref ref="ERROR_LOG"/>
+    </root>
+</configuration>

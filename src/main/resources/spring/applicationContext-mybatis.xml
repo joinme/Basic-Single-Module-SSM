@@ -11,14 +11,34 @@ http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <!-- 自动扫描 mapper.xml文件(读取的是编译出来的classes目录下的module目录下的具体模块的mapping目录下的任意xml文件) -->
-        <property name="mapperLocations" value="classpath:module/*/mapper/*.xml"></property>
+        <!--<property name="mapperLocations" value="classpath:module/*/mapper/*.xml"></property>-->
+        <!-- 考入 -->
+        <property name="mapperLocations">
+            <array>
+                <value>classpath:module/*/mapper/*.xml</value>
+                <!--<value>classpath:sqlclient/base/*.xml</value>-->
+                <!--<value>classpath:sqlclient/third/*.xml</value>-->
+            </array>
+        </property>
+        <!-- 别名，多个用逗号或分号隔开 考入 -->
+        <!--
+        <property name="typeAliasesPackage"
+                  value="com.hjb.finance.framework.access.xml.model,
+				  com.hjb.finance.framework.sso.model,
+				com.hjb.finance.framework.message.model,
+				com.hjb.zhc.model,
+				com.hjb.zhc.base.model,
+				com.hjb.zhc.user.model,
+				com.hjb.zhc.trade.model
+				  "/>
+        -->
         <!--最新mybatis的配置文件位置-->
         <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"></property>
     </bean>
 
     <!-- mapper 接口所在包名，Spring会自动查找其下的类 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.youmeek.ssm.module.*.mapper"/>
+        <property name="basePackage" value="com.youmeek.*.*.mapper,com.youmeek.*.*.*.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
 

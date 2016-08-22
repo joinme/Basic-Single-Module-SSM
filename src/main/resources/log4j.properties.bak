@@ -5,7 +5,7 @@
 #log4j.rootLogger=trace,appenderNameConsole,appenderNameRollingFile
 
 #\u53EA\u8F93\u51FA\u5230\u63A7\u5236\u53F0\uFF0C\u4E0D\u8F93\u51FA\u5230\u6587\u4EF6\uFF0C\u7EA7\u522B\uFF1Aall > trace > debug > info > warn > error
-log4j.rootLogger=info,appenderNameConsole
+log4j.rootLogger=debug,appenderNameConsole
 
 #\u63A7\u5236\u53F0\u8F93\u51FA
 log4j.appender.appenderNameConsole=org.apache.log4j.ConsoleAppender

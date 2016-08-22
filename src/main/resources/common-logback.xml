@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+	<!-- 关闭频繁刷控制台的日志 -->
+	<!-- include resource="common-logback.xml" -->
+	<logger name="org.apache.commons.httpclient.util.IdleConnectionHandler" level="INFO" />
+	<logger name="org.apache.activemq.transport.AbstractInactivityMonitor" level="INFO" />
+	<logger name="com.hjb.common.http" level="INFO" />
+	<logger name="org.apache.http.impl.conn" level="INFO" />
+</included>
