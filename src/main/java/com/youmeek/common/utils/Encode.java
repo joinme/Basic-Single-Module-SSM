@@ -18,6 +18,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -32,6 +33,16 @@ public class Encode {
 	public static synchronized String SHAEncode(String in) {
 		if(in != null && in.length() != 0) {
 			getSHAdigist().update(in.getBytes());
+			byte[] b = getSHAdigist().digest();
+			return (new String(Hex.encodeHex(b))).toUpperCase();
+		} else {
+			return null;
+		}
+	}
+	
+	public static synchronized String SHAEncode(String in, String charset) throws UnsupportedEncodingException {
+		if(in != null && in.length() != 0) {
+			getSHAdigist().update(in.getBytes(charset));
 			byte[] b = getSHAdigist().digest();
 			return (new String(Hex.encodeHex(b))).toUpperCase();
 		} else {
@@ -77,6 +88,11 @@ public class Encode {
 	
 	public static String shaAndMd5Encode(String src, String dynamicSolt, String staticSolt) {
 		String first = SHAEncode(dynamicSolt + src + staticSolt);
+		return MD5Encode(first + staticSolt + dynamicSolt);
+	}
+	
+	public static String shaAndMd5Encode(String src, String dynamicSolt, String staticSolt, String charset) throws UnsupportedEncodingException {
+		String first = SHAEncode(dynamicSolt + src + staticSolt, charset);
 		return MD5Encode(first + staticSolt + dynamicSolt);
 	}
 }
